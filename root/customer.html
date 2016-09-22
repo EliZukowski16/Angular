@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html ng-app="customers">
+<head>
+</head>
+
+<body ng-controller="CustomerController as CC">
+
+    <ul>
+        <a href = ""><li data-id="{{customer.id}}" ng-repeat="customer in CC.customers" ng-click="CC.remove($index)">
+            {{customer.firstName}} {{customer.lastName}}</li></a>
+    </ul>
+
+
+
+    <form ng-submit="CC.add()">
+        <label for="firstName">New Customer First Name</label><br /> <input
+            id="firstName" type="text" ng-model="CC.newFirstName" /> <br /> <label
+            for="lastName">New Customer Last Name</label><br /> <input
+            id="lastName" type="text" ng-model="CC.newLastName" /> <br /> <input
+            type="submit" value="Add New Customer" />
+    </form>
+    <div>{{CC.customers.length}}</div>
+    <div>
+        <p ng-repeat="customer in CC.customers.slice(0,1)">{{customer.firstName}} {{customer.lastName}}</p>
+        <p ng-repeat="customer in CC.customers.slice(CC.customers.length -1)">{{customer.firstName}} {{customer.lastName}}</p>
+    
+    </div>
+
+    <script src="js/angular.min.js"></script>
+    <script type="text/javascript">
+        angular.module('customers', []).controller("CustomerController", function($scope) {
+    
+            this.customers = [
+                {
+                    id : "12345",
+                    firstName : "John",
+                    lastName : "Doe"
+                },
+                {
+                    id : "54321",
+                    firstName : "Bob",
+                    lastName : "Smith"
+                }
+            ];
+            
+            this.newFirstName = "";
+            this.newLastName = "";
+    
+            this.add = function() {
+                this.customers.push({
+                    id : 55555,
+                    firstName : this.newFirstName,
+                    lastName : this.newLastName
+                });
+                this.newFirstName = "";
+                this.newLastName = "";
+            }
+            
+            this.remove = function($index) {
+            	console.log($index);
+            	this.customers.splice($index, 1)
+            }
+    
+            var self = this;
+            setTimeout(function() {
+                console.log("timeout ran")
+                self.customers.push({
+                    id : "55555",
+                    firstName : "Jack",
+                    lastName : "Jones"
+                })
+                $scope.$apply()
+            }, 1500)
+    
+    
+        })
+    </script>
+</body>
+
+</html>
